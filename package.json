@@ -10,11 +10,12 @@
     "react-scripts": "3.4.3"
   },
   "devDependencies": {
+    "esbuild": "^0.8.25",
     "typescript": "3.8.3"
   },
   "scripts": {
     "start": "react-scripts start",
-    "build": "react-scripts build",
+    "build": "esbuild src/index.jsx --outfile=build/bundle.min.js --bundle --minify --define:process.env.NODE_ENV='production' --target=chrome58,firefox57,safari11,edge16",
     "test": "react-scripts test --env=jsdom",
     "eject": "react-scripts eject"
   },
