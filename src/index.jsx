@@ -1,5 +1,7 @@
 import React from "react";
 import ReactDOM from "react-dom";
+import createCache from "@emotion/cache";
+import { CacheProvider } from "@emotion/react";
 import { App } from "./App";
 
 class EvilPlanElement extends HTMLElement {
@@ -37,10 +39,20 @@ class EvilPlanElement extends HTMLElement {
 
   render() {
     // renders your App within this element
-    ReactDOM.render(<App ransom={this.ransom}></App>, this);
+    ReactDOM.render(
+      <CacheProvider value={this._emotionCache}>
+        <App ransom={this.ransom}></App>
+      </CacheProvider>,
+      this.shadowRoot
+    );
   }
 
   connectedCallback() {
+    this.attachShadow({ mode: "open" });
+    this._emotionCache = createCache({
+      key: "whatevs",
+      container: this.shadowRoot,
+    });
     // every property assigned to the element before your component was defined, is available now
     this.render();
   }
